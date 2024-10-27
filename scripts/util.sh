@@ -93,7 +93,7 @@ ensure_user_exists() {
   log "Ensure user ${user} exists"
   if ! getent passwd "${user}"; then
     log " -> user added"
-    useradd "${user}"
+    useradd -m "${user}"
   else
     log " -> already exists"
   fi
