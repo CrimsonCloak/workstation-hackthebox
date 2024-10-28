@@ -93,7 +93,7 @@ ensure_user_exists() {
   log "Ensure user ${user} exists"
   if ! getent passwd "${user}"; then
     log " -> user added"
-    useradd -m "${user}"
+    useradd -m "${user}" -s /usr/bin/zsh
   else
     log " -> already exists"
   fi
@@ -125,4 +125,13 @@ assign_groups() {
     usermod -aG "${1}" "${user}"
     shift
   done
+}
+
+set_keyboard_loadout() {
+# Default layout on Kali: us
+# Set using the /etc/default/keyboard file
+  local layout="${1}"
+  sed -i "s/XKBLAYOUT=\"[a-z]*\"/XKBLAYOUT=\"${layout}\"/" /etc/default/keyboard
+  dpkg-reconfigure -f noninteractive keyboard-configuration
+
 }
